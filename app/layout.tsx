@@ -16,7 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <body className={`${inter.variable} font-sans`}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <QueryProvider>
             {children}
             <Toaster position="top-right" theme="system" richColors closeButton />

@@ -6,17 +6,31 @@ export const revalidate = 30;
 export default async function HomePage() {
   const supabase = await createClient();
 
-  const [kpisRes, porDiaRes, porCampanhaRes] = await Promise.all([
-    supabase.from("v_kpis_overview").select("*").single(),
-    supabase.from("v_leads_por_dia").select("*").limit(30),
-    supabase.from("v_leads_por_campanha").select("*").limit(10),
-  ]);
+  const [kpisRes, porDiaRes, porCampanhaRes, perfVendedoresRes, leadsRecentesRes, semVendedorRes] =
+    await Promise.all([
+      supabase.from("v_kpis_overview").select("*").single(),
+      supabase.from("v_leads_por_dia").select("*").limit(30),
+      supabase.from("v_leads_por_campanha").select("*").limit(8),
+      supabase.from("v_performance_vendedor").select("*").eq("ativo", true).limit(6),
+      supabase
+        .from("leads")
+        .select(
+          "id, nome, telefone, email, status, campanha_nome, origem_sheet_tab, lead_criado_em, created_at, ultimo_contato, vendedor_id",
+        )
+        .eq("status", "novo")
+        .order("lead_criado_em", { ascending: false, nullsFirst: false })
+        .limit(5),
+      supabase.from("leads").select("id", { count: "exact", head: true }).is("vendedor_id", null),
+    ]);
 
   return (
     <HomePageClient
       kpis={kpisRes.data ?? null}
       leadsPorDia={porDiaRes.data ?? []}
       topCampanhas={porCampanhaRes.data ?? []}
+      perfVendedores={perfVendedoresRes.data ?? []}
+      leadsRecentes={(leadsRecentesRes.data ?? []) as any}
+      semVendedor={semVendedorRes.count ?? 0}
     />
   );
 }
