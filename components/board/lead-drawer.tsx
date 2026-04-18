@@ -1,12 +1,13 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Phone, Mail, Clock, Tag, Target, MessageSquare, Activity } from "lucide-react";
+import { X, Phone, Mail, Clock, Tag, Target, MessageSquare, Activity, DollarSign, CheckCircle2 } from "lucide-react";
 import { StatusBadge } from "@/components/leads/status-badge";
+import { FecharVendaDialog } from "@/components/leads/fechar-venda-dialog";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLead, useStatusHistory, useUpdateLead, useUpdateLeadStatus } from "@/lib/hooks/use-leads";
-import { STATUS_LABELS, STATUS_ORDER, formatDateTime, formatPhone, fromNow, whatsappLink } from "@/lib/utils";
+import { STATUS_LABELS, STATUS_ORDER, formatDateTime, formatPhone, fromNow, whatsappLink, formatCurrency } from "@/lib/utils";
 import type { LeadStatus } from "@/types/database";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
@@ -17,6 +18,7 @@ export function LeadDrawer({ leadId, onClose }: { leadId: string | null; onClose
   const updateStatus = useUpdateLeadStatus();
   const updateLead = useUpdateLead();
   const [obs, setObs] = useState("");
+  const [fecharOpen, setFecharOpen] = useState(false);
 
   useEffect(() => {
     setObs(lead?.observacoes ?? "");
@@ -26,6 +28,11 @@ export function LeadDrawer({ leadId, onClose }: { leadId: string | null; onClose
 
   function handleStatusChange(status: LeadStatus) {
     if (!lead) return;
+    // Se for mudança pra fechado, abre dialog de venda em vez de só mudar status
+    if (status === "fechado" && lead.status !== "fechado") {
+      setFecharOpen(true);
+      return;
+    }
     toast.promise(updateStatus.mutateAsync({ id: lead.id, status }), {
       loading: "Atualizando...",
       success: `Status: ${STATUS_LABELS[status]}`,
@@ -125,6 +132,41 @@ export function LeadDrawer({ leadId, onClose }: { leadId: string | null; onClose
                     )}
                   </div>
 
+                  {lead.status === "fechado" && lead.valor_fechamento != null && (
+                    <section className="bg-emerald-500/5 border border-emerald-500/20 rounded-xl p-4 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 rounded-lg bg-emerald-500/15 flex items-center justify-center">
+                            <DollarSign className="w-4 h-4 text-emerald-600" />
+                          </div>
+                          <div>
+                            <div className="text-xs text-muted-foreground">Valor da venda</div>
+                            <div className="text-xl font-bold text-emerald-600">{formatCurrency(lead.valor_fechamento)}</div>
+                          </div>
+                        </div>
+                        <Button size="sm" variant="outline" onClick={() => setFecharOpen(true)}>
+                          Editar
+                        </Button>
+                      </div>
+                      <div className="text-xs text-muted-foreground space-y-0.5 pt-2 border-t border-emerald-500/20">
+                        {lead.data_fechamento && <div>Fechada em {formatDateTime(lead.data_fechamento)}</div>}
+                        {lead.produto_servico && <div>Produto: {lead.produto_servico}</div>}
+                        {lead.forma_pagamento && <div>Pagamento: {lead.forma_pagamento}</div>}
+                        {lead.observacao_fechamento && <div className="italic">"{lead.observacao_fechamento}"</div>}
+                      </div>
+                    </section>
+                  )}
+
+                  {lead.status !== "fechado" && (
+                    <Button
+                      onClick={() => setFecharOpen(true)}
+                      className="w-full bg-emerald-600 hover:bg-emerald-700 text-white gap-2"
+                    >
+                      <CheckCircle2 className="w-4 h-4" />
+                      Registrar venda fechada
+                    </Button>
+                  )}
+
                   <section>
                     <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 flex items-center gap-2">
                       <Target className="w-3 h-3" />
@@ -209,6 +251,8 @@ export function LeadDrawer({ leadId, onClose }: { leadId: string | null; onClose
               )}
             </div>
           </motion.aside>
+
+          <FecharVendaDialog lead={lead ?? null} open={fecharOpen} onClose={() => setFecharOpen(false)} />
         </>
       )}
     </AnimatePresence>

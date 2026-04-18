@@ -42,6 +42,11 @@ export interface Lead {
   atribuido_em: string | null;
   observacoes: string | null;
   ultimo_contato: string | null;
+  valor_fechamento: number | null;
+  data_fechamento: string | null;
+  observacao_fechamento: string | null;
+  forma_pagamento: string | null;
+  produto_servico: string | null;
   origem_sheet_tab: string | null;
   origem_sheet_row: number | null;
   lead_criado_em: string | null;

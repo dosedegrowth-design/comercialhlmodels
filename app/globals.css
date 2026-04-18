@@ -4,64 +4,68 @@
 
 @layer base {
   :root {
-    /* Light theme — padrão B2B limpo */
-    --background: 0 0% 99%;
-    --foreground: 240 10% 10%;
+    /* Light theme — paleta laranja + preto (industrial, profissional) */
+    --background: 40 15% 98%;
+    --foreground: 20 15% 10%;
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 10%;
+    --card-foreground: 20 15% 10%;
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 10%;
-    --primary: 262 80% 50%;
+    --popover-foreground: 20 15% 10%;
+
+    --primary: 24 95% 53%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 240 5% 96%;
-    --secondary-foreground: 240 8% 20%;
-    --muted: 240 5% 96%;
-    --muted-foreground: 240 4% 46%;
-    --accent: 262 95% 97%;
-    --accent-foreground: 262 80% 30%;
-    --destructive: 0 84% 60%;
+
+    --secondary: 30 8% 95%;
+    --secondary-foreground: 20 12% 18%;
+    --muted: 30 8% 95%;
+    --muted-foreground: 25 8% 42%;
+    --accent: 28 95% 96%;
+    --accent-foreground: 24 95% 30%;
+    --destructive: 0 75% 55%;
     --destructive-foreground: 0 0% 100%;
-    --border: 240 6% 92%;
-    --input: 240 6% 92%;
-    --ring: 262 80% 50%;
+    --border: 30 8% 90%;
+    --input: 30 8% 90%;
+    --ring: 24 95% 53%;
     --radius: 0.75rem;
 
-    --glow: 262 80% 50%;
-    --grad-from: 262 80% 55%;
-    --grad-to: 330 80% 60%;
+    --glow: 24 95% 53%;
 
-    /* Heat colors (temperatura do lead) */
+    --grad-from: 24 95% 53%;
+    --grad-to: 18 85% 42%;
+
     --heat-hot: 210 90% 55%;
     --heat-fast: 145 70% 45%;
-    --heat-warm: 45 95% 55%;
+    --heat-warm: 38 95% 50%;
     --heat-cold: 0 75% 55%;
     --heat-neutral: 220 8% 55%;
   }
 
   .dark {
-    --background: 240 15% 5%;
-    --foreground: 0 0% 98%;
-    --card: 240 12% 8%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 15% 6%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 262 80% 65%;
-    --primary-foreground: 240 15% 8%;
-    --secondary: 240 6% 14%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 6% 14%;
-    --muted-foreground: 240 5% 65%;
-    --accent: 262 40% 18%;
-    --accent-foreground: 262 80% 80%;
-    --destructive: 0 62.8% 50%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 6% 16%;
-    --input: 240 6% 16%;
-    --ring: 262 80% 65%;
+    --background: 20 10% 6%;
+    --foreground: 30 15% 96%;
+    --card: 20 10% 9%;
+    --card-foreground: 30 15% 96%;
+    --popover: 20 10% 7%;
+    --popover-foreground: 30 15% 96%;
 
-    --glow: 262 80% 65%;
-    --grad-from: 262 80% 65%;
-    --grad-to: 330 85% 65%;
+    --primary: 24 95% 58%;
+    --primary-foreground: 20 10% 8%;
+
+    --secondary: 20 8% 14%;
+    --secondary-foreground: 30 15% 96%;
+    --muted: 20 8% 14%;
+    --muted-foreground: 30 10% 65%;
+    --accent: 24 50% 20%;
+    --accent-foreground: 24 95% 75%;
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 20 8% 16%;
+    --input: 20 8% 16%;
+    --ring: 24 95% 58%;
+
+    --glow: 24 95% 58%;
+    --grad-from: 24 95% 58%;
+    --grad-to: 18 85% 48%;
   }
 }
 
@@ -101,20 +105,17 @@
     background: linear-gradient(135deg, hsl(var(--grad-from)), hsl(var(--grad-to)));
   }
 
+  .bg-gradient-dark {
+    background: linear-gradient(135deg, hsl(20 15% 10%) 0%, hsl(20 10% 18%) 100%);
+  }
+
   .glow { box-shadow: 0 0 40px -10px hsl(var(--glow) / 0.4); }
   .glow-sm { box-shadow: 0 0 20px -8px hsl(var(--glow) / 0.3); }
 
-  .shadow-soft {
-    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.03), 0 1px 3px 0 rgb(0 0 0 / 0.04);
-  }
-  .shadow-card {
-    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05), 0 1px 2px -1px rgb(0 0 0 / 0.04);
-  }
-  .shadow-card-hover {
-    box-shadow: 0 4px 12px -2px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.04);
-  }
-  .dark .shadow-soft,
-  .dark .shadow-card {
+  .shadow-soft { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.03), 0 1px 3px 0 rgb(0 0 0 / 0.04); }
+  .shadow-card { box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05), 0 1px 2px -1px rgb(0 0 0 / 0.04); }
+  .shadow-card-hover { box-shadow: 0 4px 12px -2px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.04); }
+  .dark .shadow-soft, .dark .shadow-card {
     box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.3);
   }
 

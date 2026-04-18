@@ -13,6 +13,7 @@ import {
   Sparkles,
   LogOut,
   User as UserIcon,
+  DollarSign,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAbas } from "@/lib/hooks/use-leads";
@@ -22,6 +23,7 @@ import { useEffect, useState } from "react";
 const MAIN_NAV = [
   { href: "/", label: "Visão Geral", icon: LayoutDashboard },
   { href: "/board", label: "Board Comercial", icon: KanbanSquare },
+  { href: "/financeiro", label: "Financeiro", icon: DollarSign },
   { href: "/analytics", label: "Analytics", icon: BarChart3 },
   { href: "/vendedores", label: "Vendedores", icon: Users },
 ] as const;

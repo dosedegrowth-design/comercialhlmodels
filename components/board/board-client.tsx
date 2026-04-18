@@ -10,6 +10,7 @@ import { KanbanBoard } from "@/components/board/kanban-board";
 import { LeadsTable } from "@/components/board/leads-table";
 import { LeadDrawer } from "@/components/board/lead-drawer";
 import { DistribuirDialog } from "@/components/vendedores/distribuir-dialog";
+import { BulkActionsBar } from "@/components/board/bulk-actions-bar";
 import { useLeads, type LeadsFilter } from "@/lib/hooks/use-leads";
 import { exportLeadsCSV } from "@/lib/utils/export";
 import { toast } from "sonner";
@@ -23,6 +24,16 @@ export function BoardClient() {
   const [filters, setFilters] = useState<LeadsFilter>({ pageSize: 500 });
   const [openLeadId, setOpenLeadId] = useState<string | null>(null);
   const [distribuirOpen, setDistribuirOpen] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+
+  function toggleSelect(id: string) {
+    setSelectedIds((curr) => (curr.includes(id) ? curr.filter((x) => x !== id) : [...curr, id]));
+  }
+
+  function toggleAll() {
+    if (selectedIds.length === leads.length) setSelectedIds([]);
+    else setSelectedIds(leads.map((l) => l.id));
+  }
 
   // Sync do filtro origem_sheet_tab com query string (?aba=)
   useEffect(() => {
@@ -117,13 +128,25 @@ export function BoardClient() {
             </motion.div>
           ) : (
             <motion.div key="list" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="h-full p-6 overflow-auto scrollbar-thin">
-              <LeadsTable leads={leads} isLoading={isLoading} onOpen={setOpenLeadId} />
+              <LeadsTable
+                leads={leads}
+                isLoading={isLoading}
+                onOpen={setOpenLeadId}
+                selectedIds={selectedIds}
+                onToggleSelect={toggleSelect}
+                onToggleAll={toggleAll}
+              />
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
       <LeadDrawer leadId={openLeadId} onClose={() => setOpenLeadId(null)} />
+      <BulkActionsBar
+        selectedIds={selectedIds}
+        onClear={() => setSelectedIds([])}
+        onOpenDistribuir={() => setDistribuirOpen(true)}
+      />
       <DistribuirDialog
         open={distribuirOpen}
         onClose={() => setDistribuirOpen(false)}

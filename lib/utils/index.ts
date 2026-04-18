@@ -58,6 +58,11 @@ export function formatPhone(phone: string | null | undefined) {
   return phone;
 }
 
+export function formatCurrency(value: number | null | undefined): string {
+  if (value == null) return "—";
+  return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(value);
+}
+
 export function whatsappLink(phone: string | null | undefined, message?: string) {
   if (!phone) return null;
   const digits = phone.replace(/\D/g, "");
