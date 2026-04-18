@@ -1,28 +1,33 @@
-import { BarChart3 } from "lucide-react";
+import { createClient } from "@/lib/supabase/server";
+import { AnalyticsClient } from "@/components/analytics/analytics-client";
 
-export default function AnalyticsPage() {
+export const revalidate = 30;
+
+export default async function AnalyticsPage() {
+  const supabase = await createClient();
+
+  const [funilRes, campanhaRes, adsetRes, adRes, heatmapRes, tempoRes, comparativoRes, porFormRes] =
+    await Promise.all([
+      supabase.from("v_analytics_funil").select("*").single(),
+      supabase.from("v_valor_por_campanha").select("*").limit(20),
+      supabase.from("v_analytics_adset").select("*").limit(15),
+      supabase.from("v_analytics_ad").select("*").limit(15),
+      supabase.from("v_analytics_heatmap").select("*"),
+      supabase.from("v_analytics_tempo_conversao").select("*").single(),
+      supabase.from("v_analytics_comparativo").select("*").single(),
+      supabase.from("v_receita_por_formulario").select("*").limit(10),
+    ]);
+
   return (
-    <div className="p-6 space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold">Analytics Marketing</h1>
-        <p className="text-sm text-muted-foreground">
-          Performance por campanha, grupo de anúncio e criativo
-        </p>
-      </div>
-
-      <div className="grid md:grid-cols-3 gap-4">
-        {["Por Campanha", "Por Grupo de Anúncio", "Por Anúncio"].map((label) => (
-          <div key={label} className="bg-card border rounded-lg p-6 min-h-[240px] flex flex-col items-center justify-center text-center">
-            <BarChart3 className="w-8 h-8 text-muted-foreground mb-3" />
-            <h3 className="font-semibold">{label}</h3>
-            <p className="text-xs text-muted-foreground mt-2">Fase 4</p>
-          </div>
-        ))}
-      </div>
-
-      <div className="bg-card border rounded-lg p-6 min-h-[300px] flex items-center justify-center text-muted-foreground">
-        🌊 Funil de conversão + heatmap horário (Fase 4)
-      </div>
-    </div>
+    <AnalyticsClient
+      funil={funilRes.data ?? null}
+      campanhas={campanhaRes.data ?? []}
+      adsets={adsetRes.data ?? []}
+      ads={adRes.data ?? []}
+      heatmap={heatmapRes.data ?? []}
+      tempo={tempoRes.data ?? null}
+      comparativo={comparativoRes.data ?? null}
+      porFormulario={porFormRes.data ?? []}
+    />
   );
 }
