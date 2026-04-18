@@ -3,6 +3,8 @@
 Dashboard de gestão comercial e marketing para campanhas de Lead Ads do Facebook, com sincronização bidirecional com Google Sheets e integração com Pixel / Conversions API.
 
 > 📋 **Plano completo do projeto**: ver [`PLANO_PROJETO.md`](./PLANO_PROJETO.md)
+> 📖 **Regras de negócio + lógica + gotchas**: ver [`REGRAS_E_LOGICA.md`](./REGRAS_E_LOGICA.md) ⭐
+> ✅ **Checklist de setup**: ver [`SETUP_CHECKLIST.md`](./SETUP_CHECKLIST.md)
 
 ---
 
