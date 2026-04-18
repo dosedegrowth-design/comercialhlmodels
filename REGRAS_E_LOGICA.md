@@ -9,6 +9,11 @@
 
 Painel web que centraliza **todos os leads** de campanhas de Lead Ads do Facebook da HL Models, permite **gestão comercial** (Kanban + distribuição por vendedor), **analytics de marketing** (performance de campanhas), e mantém **sincronização bidirecional** com o Google Sheets (que alimenta o Pixel/CAPI do Facebook).
 
+**URLs**:
+- Produção: https://painel-comercial-hl-models.vercel.app
+- Repo: https://github.com/dosedegrowth-design/comercialhlmodels
+- Supabase: `hsiwtgzixratjuigjxyj` (schema `hl_comercial`)
+
 ---
 
 ## 🏗️ Arquitetura
