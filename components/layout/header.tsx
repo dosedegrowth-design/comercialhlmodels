@@ -4,8 +4,9 @@ import { Moon, Sun, LogOut, User as UserIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import { SyncButton } from "./sync-button";
 
-export function Header({ userEmail }: { userEmail?: string }) {
+export function Header({ userEmail, isAdmin }: { userEmail?: string; isAdmin?: boolean }) {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
 
@@ -23,6 +24,8 @@ export function Header({ userEmail }: { userEmail?: string }) {
       </div>
 
       <div className="flex items-center gap-3">
+        {isAdmin && <SyncButton />}
+
         <button
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
           className="p-2 rounded-md hover:bg-accent transition-colors"
